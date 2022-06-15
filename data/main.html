@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slider Testbench</title>
+
+    <!--Retrieve .css file-->
+    <link rel="stylesheet" href="main.css"> 
+    </head>
+<body onload="getData()">
+    
+    <h1>Control Unit</h1>
+    
+<section style="--nml 3">
+
+    <!--Range sliders and labels-->
+  <form style="--m: 5; --col0: max-content">
+    <label></label>
+      
+      
+    <label for="r11">Bass</label>
+    <input type="range" id="r11" min="-100" value="0" max="100" list="l1" oninput="this.nextElementSibling.value = this.value"/>
+      <output id="o11"></output>
+      
+      
+    <label for="r12">Treble</label>
+    <input type="range" id="r12" min="-100" value="0" max="100" list="l1" oninput="this.nextElementSibling.value = this.value"/>
+      <output id="o12"></output>
+      
+      
+    <label for="r13">Balance</label>
+    <input type="range" id="r13" min="-100" value="0" max="100" list="l1" oninput="this.nextElementSibling.value = this.value"/>
+      <output id="o13"></output>
+      
+      
+    <datalist id="l1">
+    <option value="-100">-100</option>
+    <option value="0">0</option>
+    <option value="100">100</option>
+    </datalist>
+      
+      
+  </form>
+    <h4></h4>
+    <form style="--m: 3; --col0: max-content">
+    <label></label>
+      
+      
+    <label for="r10">Bass Frequency</label>
+    <input type="range" id="r20" min="100" value="100" max="400" list="l2" step="10" oninput="this.nextElementSibling.value = this.value"/>
+      <output id="o20"></output>      
+    
+    <datalist id="l2">
+    <option value="100">100</option>
+    <option value="400">400</option>
+    </datalist>
+      
+  </form>
+
+</section>
+    
+<aside>
+    <!--Frequency range sliders and labels-->
+  <form style="--m: 3; --col0: max-content">
+    <label></label>
+      
+    <label for="r10">Volume</label>
+    <input type="range" id="r10" min="0" value="0" max="100" list="l3" oninput="this.nextElementSibling.value = this.value"/>
+      <output id="o10"></output>
+      
+    
+    <datalist id="l3">
+    <option value="0">0</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+    </datalist>
+      
+  </form>
+    <h4></h4>
+  <form style="--m: 3; --col0: max-content">
+    <label></label>
+      
+    <label for="r11">Treble Frequency</label>
+    <input type="range" id="r21" min="2500" value="2500" max="10000" list="l4" step="100" oninput="this.nextElementSibling.value = this.value"/>
+      <output id="o21"></output>
+      
+    
+    <datalist id="l4">
+    <option value="2500">2500</option>
+    <option value="10000">10000</option>
+    </datalist>
+      
+  </form>
+</aside>
+    <!--   <form style="position:absolute; left:50em; top:45em; --m: 5; --col0: max-content"> -->
+    
+    <!--   <form style="position:absolute; left:90em; top:45em;--m: 2; --col0: max-content"> -->
+    
+    
+    
+    <!-- Retrieve and display range values-->
+<script>
+    
+    function getData(){
+        console.log("Getting Data");
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // if there is a response
+                console.log("there is a response");
+                console.log(xhr.responseText);
+                const responseArr = xhr.responseText.split(',').map(element => {
+                    return Number(element);
+                })
+                console.log(responseArr);
+                
+                //document.getElementById("demo").innerHTML = xhttp.responseText;
+                //parse the incoming data: a string "volume,bass,treble,balance,bfreq,tfreq"
+                //console.log(text.match(,))
+          
+            }
+        };
+        xhr.open("GET", "/data?value=5", true);
+        xhr.send();
+    }
+
+    document.getElementById("r10").onchange = function(){
+        var vol_value = document.getElementById('r10').value;
+        document.getElementById('o10').value = vol_value;
+        console.log(vol_value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/volume?value=" + vol_value, true);
+        xhr.send();
+    }
+    
+    document.getElementById("r11").onchange = function(){
+        var bass_value = document.getElementById('r11').value;
+        document.getElementById('o11').value = bass_value;
+        console.log(bass_value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/bass?value=" + bass_value, true);
+        xhr.send();
+    }
+    
+    document.getElementById("r12").onchange = function(){
+        var treble_value = document.getElementById('r12').value;
+        document.getElementById('o12').value = treble_value;
+        console.log(treble_value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/treble?value=" + treble_value, true);
+        xhr.send();
+    }
+
+    document.getElementById("r13").onchange = function(){
+        var balance_value = document.getElementById('r13').value;
+        document.getElementById('o13').value = balance_value;
+        console.log(balance_value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/balance?value=" + balance_value, true);
+        xhr.send();
+    }
+
+    document.getElementById("r20").onchange = function(){
+        var bassfreq_value = document.getElementById('r20').value;
+        document.getElementById('o20').value = bassfreq_value;
+        console.log(bassfreq_value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/bfreq?value=" + bassfreq_value, true);
+        xhr.send();
+    }
+
+    document.getElementById("r21").onchange = function(){
+        var treblefreq_value = document.getElementById('r21').value;
+        document.getElementById('o21').value = treblefreq_value;
+        console.log(treblefreq_value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/tfreq?value=" + treblefreq_value, true);
+        xhr.send();
+    }
+    </script>
+
+</body>
+    <h3>Audio system developed by WAVE-Solutions</h3>
+    <h4>The Hague University of Applied Sciences</h4>
+</html>
